@@ -32,6 +32,7 @@ namespace NetKubernetes.Controllers
             return await _repository.RegistroUsuario(usuarioRegistroRequestDto);
         }
 
+        
         [HttpGet]
         public async Task<ActionResult<UsuarioResponseDto>> DevolverUsuario()
         {

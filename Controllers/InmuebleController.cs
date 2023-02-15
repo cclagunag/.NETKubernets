@@ -9,7 +9,7 @@ using NetKubernetes.Models;
 namespace NetKubernetes.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class InmuebleController : Controller
     {
         private readonly IInmuebleRepository _repository;

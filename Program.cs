@@ -93,7 +93,6 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ManagerMiddleware>();
 
 app.UseAuthentication();
-
 app.UseCors("corsapp");
 
 //app.UseHttpsRedirection();
