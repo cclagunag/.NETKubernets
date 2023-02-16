@@ -45,7 +45,16 @@ namespace NetKubernetes.Data.Usuarios
         }
         public async Task<UsuarioResponseDto> GetUsuario()
         {
+            /* 
+                mediante el objeto
+                UserManager<Usuario> _userManager.FindByNameAsync encontrar sessión de usuario mediante userNme;
+                IUsuarioSesion _usuarioSesion
+             */
             var usuario = await _userManager.FindByNameAsync(_usuarioSesion.ObtenerUsuarioSesion());
+            /* si no encontró usuario entonces se crea un MiddlewareException registrando el
+                - Código HTTP
+                - el mensaje
+             */
             if (usuario is null)
             {
                 throw new MiddlewareException(
@@ -53,12 +62,23 @@ namespace NetKubernetes.Data.Usuarios
                     new { mensaje = "El usuario del token no existe en la base de datos" }
                     );
             }
+            /* 
+                va a transformar el objeto usuario con un objeto UsuarioResponseDto
+             */
             return TransformerUsertoUserDto(usuario!);
 
         }
 
+
+        /* 
+            La funcion se encarga de  validar si el usuario existe o no
+         */
         public async Task<UsuarioResponseDto> Login(UsuarioLoginRequestDto usuarioLoginRequestDto)
         {
+            /* 
+                mediante el objeto
+                UserManager<Usuario> _userManager.FindByEmailAsync encontrar usuario mediante email
+             */
             var usuario = await _userManager.FindByEmailAsync(usuarioLoginRequestDto.Email!);
             if (usuario is null)
             {
@@ -67,6 +87,14 @@ namespace NetKubernetes.Data.Usuarios
                     new { mensaje = "El email del usuario no existe en la base de datos" }
                     );
             }
+
+            /* 
+                Si esta correcto el password entonces genera la sesión de usuario
+                Task<SignInResult> SignInManager<Usuario>.CheckPasswordSignInAsync(Usuario user, string password, bool lockoutOnFailure)
+                - usuario: reciben el usuario
+                - password: reciben el password
+                - true: la cuenta se bloquea si el usuario se equivoca 2 veces, falso: anula esta función
+             */
             var resultado = await _signInManager.CheckPasswordSignInAsync(usuario!, usuarioLoginRequestDto.Password!, false);
             if (resultado.Succeeded)
             {
@@ -80,8 +108,15 @@ namespace NetKubernetes.Data.Usuarios
 
         }
 
+        /* 
+            La funcion se encarga de registrar el usuario
+         */
         public async Task<UsuarioResponseDto> RegistroUsuario(UsuarioRegistroRequestDto usuarioRegistroRequestDto)
         {
+
+            /* 
+                encontrar si el email existe
+             */
             var existeEmail = await _context.Users.Where(x => x.Email == usuarioRegistroRequestDto.Email).AnyAsync();
 
             if (existeEmail)
@@ -92,6 +127,9 @@ namespace NetKubernetes.Data.Usuarios
                     );
             }
 
+            /* 
+                encontrar si el email existe
+             */
             var existeUsername = await _context.Users.Where(x => x.UserName == usuarioRegistroRequestDto.UserName).AnyAsync();
 
             if (existeUsername)
@@ -109,7 +147,10 @@ namespace NetKubernetes.Data.Usuarios
                 Email = usuarioRegistroRequestDto.Email,
                 UserName = usuarioRegistroRequestDto.UserName
             };
-
+            /* 
+                mediante el objeto
+                UserManager<Usuario> _userManager.CreateAsync va a crear el usuario con la contraseña cifrada
+             */
             var resultado = await _userManager.CreateAsync(usuario!, usuarioRegistroRequestDto.Password!);
             if (resultado.Succeeded)
             {

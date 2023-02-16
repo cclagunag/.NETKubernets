@@ -10,6 +10,8 @@ namespace NetKubernetes.Token
         }
         public string ObtenerUsuarioSesion()
         {
+            // obtener el username que está en sesión de usuario en la aplicación 
+            // mediante el IHttpContextAccessor _httpContextAccessor;
             var userName = _httpContextAccessor.HttpContext!.User?.Claims?
             .FirstOrDefault(x=>x.Type == ClaimTypes.NameIdentifier)?.Value;
             return userName!;

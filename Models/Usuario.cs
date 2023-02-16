@@ -2,7 +2,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace NetKubernetes.Models
 {
-    public class Usuario: IdentityUser
+    // la clase usuario hereda las propiedades de IdentityUser que contiene otros campos
+    //ID
+    //EMAIL
+    //USERNAME
+    public class Usuario : IdentityUser
     {
         //ID
         //EMAIL

@@ -7,6 +7,7 @@ public class LoadDatabase
 {
     public static async Task InsertarData(AppDbContext context, UserManager<Usuario> usuarioManager)
     {
+        // si no hay usuarios registrados entonces crear usuarios
         if (!usuarioManager.Users.Any())
         {
             var usuario = new Usuario
@@ -20,6 +21,7 @@ public class LoadDatabase
 
             await usuarioManager.CreateAsync(usuario, "Laguna#00");
         }
+        // si no hay inmuebles registrados entonces crear inmuebles
         if (!context.Inmuebles!.Any())
         {
 
@@ -44,6 +46,7 @@ public class LoadDatabase
                 }
             );
         }
+        // guardar cambios a la base de datos
         context.SaveChanges();
 
     }
