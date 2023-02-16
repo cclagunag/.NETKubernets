@@ -18,12 +18,17 @@ using NetKubernetes.Token;
 var builder = WebApplication.CreateBuilder(args);
 
 // String Connection Database registrar conexión de bases de datos
-builder.Services.AddDbContext<AppDbContext>(opt =>
-{
-    opt.LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, LogLevel.Information)
-    .EnableSensitiveDataLogging();
-    // UseSql Server Registrar string de bases de datos
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerConnection"));
+// builder.Services.AddDbContext<AppDbContext>(opt =>
+// {
+//     opt.LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, LogLevel.Information)
+//     .EnableSensitiveDataLogging();
+//     // UseSql Server Registrar string de bases de datos
+//     opt.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerConnection"));
+// });
+
+var connectionMySqlString = builder.Configuration.GetConnectionString("MySqlConnection");
+builder.Services.AddDbContext<AppDbContext>(options=> {
+    options.UseMySql(connectionMySqlString, ServerVersion.AutoDetect(connectionMySqlString));
 });
 
 
