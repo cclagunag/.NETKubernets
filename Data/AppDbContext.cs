@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NetKubernetes.Models;
@@ -17,6 +18,10 @@ namespace NetKubernetes.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder); // Generate tables databases
+            builder.Entity<Usuario>().Property(x => x.Id).HasMaxLength(36);
+            builder.Entity<Usuario>().Property(x => x.NormalizedUserName).HasMaxLength(36);
+            builder.Entity<IdentityRole>().Property(x => x.Id).HasMaxLength(36);
+            builder.Entity<IdentityRole>().Property(x => x.NormalizedName).HasMaxLength(36);
         }
 
         // registrar tabla Inmueble

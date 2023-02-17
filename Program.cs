@@ -26,7 +26,12 @@ var builder = WebApplication.CreateBuilder(args);
 //     opt.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerConnection"));
 // });
 
-var connectionMySqlString = builder.Configuration.GetConnectionString("MySqlConnection");
+/* var connectionMySqlString = builder.Configuration.GetConnectionString("MySqlConnection");
+builder.Services.AddDbContext<AppDbContext>(options=> {
+    options.UseMySql(connectionMySqlString, ServerVersion.AutoDetect(connectionMySqlString));
+}); */
+
+var connectionMySqlString = builder.Configuration.GetConnectionString("MySqlRailways");
 builder.Services.AddDbContext<AppDbContext>(options=> {
     options.UseMySql(connectionMySqlString, ServerVersion.AutoDetect(connectionMySqlString));
 });
