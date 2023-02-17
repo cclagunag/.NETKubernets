@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-pod
+  labels:
+    name: app
+    type: netapi
+spec:
+  containers:
+  - name: app-api
+    image: net-kubernetes-cclagunag:v1.0
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 5000
